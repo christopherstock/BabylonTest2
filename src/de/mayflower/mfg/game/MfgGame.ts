@@ -13,13 +13,13 @@
             MfgInit.divFps.innerHTML = MfgInit.engine.getFps().toFixed() + " fps";
 
             // Render scene
-            if (MfgInit.scene) {
+            if (MfgScene.scene) {
 
-                MfgInit.scene.render();
+                MfgScene.scene.render();
 
                 // Streams
-                if (MfgInit.scene.useDelayedTextureLoading) {
-                    var waiting = MfgInit.scene.getWaitingItemsCount();
+                if (MfgScene.scene.useDelayedTextureLoading) {
+                    var waiting = MfgScene.scene.getWaitingItemsCount();
                     if (waiting > 0) {
                         console.log("Streaming items..." + waiting + " remaining");
                     }

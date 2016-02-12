@@ -7,35 +7,42 @@
     *****************************************************************************/
     class MfgScene
     {
-        public static loadScene()
+        public              static                          scene                       :BABYLON.Scene      = null;
+
+        public static initScene()
         {
             BABYLON.SceneLoader.ShowLoadingScreen = false;
             MfgInit.engine.displayLoadingUI();
 
-            setTimeout(function () {
-                MfgInit.scene = MfgScene.CreatePhysicsScene(MfgInit.engine);
+            setTimeout(
+                function () {
+                    MfgScene.scene = MfgScene.createScene(MfgInit.engine);
 
-                if (MfgInit.scene.activeCamera) {
-                    MfgInit.scene.activeCamera.attachControl(MfgInit.canvas);
-                }
+                    if (MfgScene.scene.activeCamera) {
+                        MfgScene.scene.activeCamera.attachControl(MfgInit.canvas);
+                    }
 
-                MfgInit.scene.executeWhenReady(function () {
-                    MfgInit.canvas.style.opacity = "1";
-                    MfgInit.engine.hideLoadingUI();
-                    BABYLON.SceneLoader.ShowLoadingScreen = true;
+                    MfgScene.scene.executeWhenReady(
+                        function () {
+                            MfgInit.canvas.style.opacity = "1";
+                            MfgInit.engine.hideLoadingUI();
+                            BABYLON.SceneLoader.ShowLoadingScreen = true;
 
-                    MfgInit.scene.onPointerDown = function (evt, pickResult) {
-                        if (pickResult.hit) {
-                            var dir = pickResult.pickedPoint.subtract(MfgInit.scene.activeCamera.position);
-                            dir.normalize();
-                            pickResult.pickedMesh.applyImpulse(dir.scale(10), pickResult.pickedPoint);
+                            MfgScene.scene.onPointerDown = function (evt, pickResult) {
+                                if (pickResult.hit) {
+                                    var dir = pickResult.pickedPoint.subtract( MfgScene.scene.activeCamera.position );
+                                    dir.normalize();
+                                    pickResult.pickedMesh.applyImpulse(dir.scale(10), pickResult.pickedPoint);
+                                }
+                            };
                         }
-                    };
-                });
-            }, 15);
+                    );
+                },
+                20
+            );
         }
 
-        public static CreatePhysicsScene(engine)
+        public static createScene(engine)
         {
             var scene = new BABYLON.Scene(engine);
             scene.clearColor = BABYLON.Color3.Purple();

@@ -10,7 +10,6 @@
         public          static      canvas          :HTMLCanvasElement          = null;
         public          static      divFps          :HTMLDivElement             = null;
         public          static      engine          :BABYLON.Engine             = null;
-        public          static      scene           :BABYLON.Scene              = null;
 
         /*****************************************************************************
         *   Inits this app from scratch.
@@ -42,6 +41,6 @@
             MfgInit.engine.runRenderLoop( MfgGame.render );
 
             //load the scene
-            MfgScene.loadScene();
+            MfgScene.initScene();
         }
     }
