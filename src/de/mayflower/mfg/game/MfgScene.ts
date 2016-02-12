@@ -153,7 +153,7 @@
                 sphere.material = MfgMaterial.materialMFLogo;
                 sphere.position = new BABYLON.Vector3( Math.random() * 20 - 10, y, Math.random() * 10 - 5 );
 
-                MfgScene.shadowGenerator1.getShadowMap().renderList.push(sphere);
+                MfgScene.shadowGenerator1.getShadowMap().renderList.push( sphere );
 
                 sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
 
@@ -169,7 +169,7 @@
                 sphere.material = MfgMaterial.materialAmiga;
                 sphere.position = new BABYLON.Vector3(Math.random() * 20 - 10, y, Math.random() * 10 - 5);
 
-                MfgScene.shadowGenerator1.getShadowMap().renderList.push(sphere);
+                MfgScene.shadowGenerator1.getShadowMap().renderList.push( sphere );
 
                 sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
             }
@@ -190,7 +190,7 @@
             box0.position        = new BABYLON.Vector3(3, 30, 0);
             box0.material        = MfgMaterial.materialWood;
 
-            MfgScene.shadowGenerator1.getShadowMap().renderList.push(box0);
+            MfgScene.shadowGenerator1.getShadowMap().renderList.push( box0 );
 
             box0.setPhysicsState(   BABYLON.PhysicsEngine.BoxImpostor, { mass: 2, friction: 0.4, restitution: 0.3 } );
         }
@@ -210,8 +210,8 @@
             part1.position = new BABYLON.Vector3(0, 3, 0);
             part1.material = MfgMaterial.materialWood;
 
-            MfgScene.shadowGenerator1.getShadowMap().renderList.push(part0);
-            MfgScene.shadowGenerator1.getShadowMap().renderList.push(part1);
+            MfgScene.shadowGenerator1.getShadowMap().renderList.push( part0 );
+            MfgScene.shadowGenerator1.getShadowMap().renderList.push( part1 );
 
             MfgScene.scene.createCompoundImpostor(
                 [
@@ -303,9 +303,5 @@
             MfgScene.shadowGenerator1                      = new BABYLON.ShadowGenerator( 2048, MfgScene.light1 );
             MfgScene.shadowGenerator1.useVarianceShadowMap = true;
             MfgScene.shadowGenerator1.usePoissonSampling   = true;
-
-
-
-
         }
     }
