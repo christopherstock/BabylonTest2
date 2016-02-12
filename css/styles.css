@@ -1,0 +1,22 @@
+
+    /*****************************************************************************
+    *   Contains all style attributes the html page makes use of.
+    *
+    *   @author     Christopher Stock
+    *   @version    0.0.1
+    *****************************************************************************/
+    body.mfg
+    {
+        background-color:           #ffffff;
+        margin:                     auto;
+        overflow:                   hidden;
+        text-align:                 center;
+    }
+
+    div.ftp
+    {
+        font-family:                arial, verdana, tahoma, sans-serif;
+        color:                      #ff7700;
+        font-size:                  20px;
+        font-style:                 normal;
+    }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+
+<!-- Welcome to the Babylon.js primer -->
+<html>
+
+    <!-- head section contains all meta information -->
+    <head>
+
+        <!-- document title is set via js -->
+        <title></title>
+
+        <!-- set favicon icon -->
+        <link rel="icon"          href="favicon.ico" type="image/x-icon">
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+
+        <!-- use this external stylesheet -->
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
+
+        <!-- suppress viewport scalation for touch-devices -->
+        <meta name="viewport" content="width=device-width, height=device-height, user-scalable=no, initial-scale=1" />
+
+        <!-- load js lib sources -->
+        <script src="lib/js/babylon.2.2.js"></script>
+        <script src="lib/js/pep.min.js"></script>
+        <script src="lib/js/Oimo.js"></script>
+
+        <!-- load OBSOLETE js sources -->
+        <script src="src_old/physics.js"></script>
+
+        <!-- include all lib js-sources -->
+        <script type="text/javascript" src="src_lib/de/mayflower/lib/math/LibMath.js"></script>
+        <script type="text/javascript" src="src_lib/de/mayflower/lib/ui/LibStringFormat.js"></script>
+        <script type="text/javascript" src="src_lib/de/mayflower/lib/ui/LibUI.js"></script>
+        <script type="text/javascript" src="src_lib/de/mayflower/lib/ui/LibString.js"></script>
+        <script type="text/javascript" src="src_lib/de/mayflower/lib/util/LibDebug.js"></script>
+        <script type="text/javascript" src="src_lib/de/mayflower/lib/util/LibVersion.js"></script>
+
+        <!-- include all project js-sources -->
+        <script type="text/javascript" src="src/de/mayflower/mfg/base/MfgVersion.js"></script>
+        <script type="text/javascript" src="src/de/mayflower/mfg/base/MfgSettingsDebug.js"></script>
+        <script type="text/javascript" src="src/de/mayflower/mfg/base/MfgSettings.js"></script>
+        <script type="text/javascript" src="src/de/mayflower/mfg/base/MfgDebug.js"></script>
+        <script type="text/javascript" src="src/de/mayflower/mfg/game/MfgGame.js"></script>
+        <script type="text/javascript" src="src/de/mayflower/mfg/game/MfgInit.js"></script>
+        <script type="text/javascript" src="src/de/mayflower/mfg/Mfg.js"></script>
+
+    </head>
+
+    <!-- the body will be appended with the HTML5 canvas3D -->
+    <body class="mfg">
+
+        <canvas id="renderCanvas" touch-action="none"></canvas>
+
+        <div id="fps"></div>
+
+    </body>
+
+</html>
