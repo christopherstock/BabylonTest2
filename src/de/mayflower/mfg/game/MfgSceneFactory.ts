@@ -10,12 +10,20 @@
         /*****************************************************************************
         *   Creates a box.
         *****************************************************************************/
-        public static createBox( id:string, material:BABYLON.Material, scene:BABYLON.Scene ):BABYLON.Mesh
+        public static createBox
+        (
+            id       :string,
+            position :BABYLON.Vector3,
+            scaling  :BABYLON.Vector3,
+            material :BABYLON.Material,
+            scene    :BABYLON.Scene
+        )
+        :BABYLON.Mesh
         {
             var ground:BABYLON.Mesh = BABYLON.Mesh.CreateBox( id, 1, scene );
 
-            ground.scaling          = new BABYLON.Vector3( 100, 1, 100 );
-            ground.position         = new BABYLON.Vector3( 0.0, -5.0, 0.0 );
+            ground.position         = position;
+            ground.scaling          = scaling;
             ground.checkCollisions  = true;
             ground.material         = material;
             ground.receiveShadows   = true;

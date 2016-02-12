@@ -211,6 +211,20 @@
         *****************************************************************************/
         private static setupGround():void
         {
-            MfgSceneFactory.createBox( "Ground", MfgMaterial.groundMat, MfgScene.scene );
+            MfgSceneFactory.createBox(
+                "Ground1",
+                new BABYLON.Vector3( 0.0, -5.0, 0.0 ),
+                new BABYLON.Vector3( 100, 1, 100 ),
+                MfgMaterial.groundMat,
+                MfgScene.scene
+            );
+
+            MfgSceneFactory.createBox(
+                "Ground2",
+                new BABYLON.Vector3( 0.0, -25.0, -100.0 ),
+                new BABYLON.Vector3( 100, 1, 100 ),
+                MfgMaterial.groundMat,
+                MfgScene.scene
+            );
         }
     }
