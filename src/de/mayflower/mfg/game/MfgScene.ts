@@ -12,7 +12,7 @@
         public              static                          spawnSpheres                :boolean            = true;
         public              static                          spawnBox0                   :boolean            = true;
         public              static                          spawnCompound               :boolean            = true;
-        public              static                          spawnBorders                :boolean            = true;
+        public              static                          spawnBorders                :boolean            = false;
 
         /*****************************************************************************
         *   Sets up the scene.
@@ -56,8 +56,9 @@
         public static createScene()
         {
             //create scene
-            MfgScene.scene = new BABYLON.Scene(MfgInit.engine);
+            MfgScene.scene            = new BABYLON.Scene(MfgInit.engine);
             MfgScene.scene.clearColor = LibUI.COLOR_ORANGE_MAYFLOWER;
+            MfgScene.scene.gravity    = new BABYLON.Vector3( 0, MfgSettings.GRAVITY, 0 );
 
             //init materials
             MfgMaterial.initMaterials( MfgScene.scene );
@@ -65,7 +66,7 @@
             //setup camera
             var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(0, 0, -20), MfgScene.scene);
             camera.checkCollisions = true;
-            camera.applyGravity = true;
+            camera.applyGravity    = true;
             camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
 
             //setup lights
@@ -84,7 +85,7 @@
 
 
             // Ground
-            var ground = BABYLON.Mesh.CreateBox("Ground", 1, MfgScene.scene);
+            var ground = BABYLON.Mesh.CreateBox( "Ground", 1, MfgScene.scene );
             ground.scaling = new BABYLON.Vector3(100, 1, 100);
             ground.position.y = -5.0;
             ground.checkCollisions = true;

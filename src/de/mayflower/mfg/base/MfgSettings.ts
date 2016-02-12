@@ -18,6 +18,8 @@
         /** The desired canvas3D height. */
         public      static      CANVAS_HEIGHT                               :number             = 600;
 
+        /** The scene's gravity. */
+        public      static      GRAVITY                                     :number             = -0.01;
 
 
 
@@ -25,12 +27,6 @@
 
 
 
-        /** The camera's field of view in degrees. */
-        public      static      CAMERA_FIELD_OF_VIEW                        :number             = 60;
-        /** The minimum distance for the camera. */
-        public      static      CAMERA_NEAR                                 :number             = 1.0;
-        /** The maximum distance for the camera. */
-        public      static      CAMERA_FAR                                  :number             = 4000.0;
 
         /** The player's speed in world coordinate per tick. */
         public      static      PLAYER_SPEED_MOVE                           :number             = 10;
