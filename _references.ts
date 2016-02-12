@@ -15,6 +15,7 @@
 /// <reference path="src/de/mayflower/mfg/base/MfgVersion.ts" />
 /// <reference path="src/de/mayflower/mfg/game/MfgGame.ts" />
 /// <reference path="src/de/mayflower/mfg/game/MfgScene.ts" />
+/// <reference path="src/de/mayflower/mfg/game/MfgSceneFactory.ts" />
 /// <reference path="src/de/mayflower/mfg/game/MfgInit.ts" />
 /// <reference path="src/de/mayflower/mfg/hid/MfgKey.ts" />
 /// <reference path="src/de/mayflower/mfg/hid/MfgPointer.ts" />

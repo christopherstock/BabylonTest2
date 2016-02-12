@@ -64,7 +64,7 @@
             MfgMaterial.initMaterials( MfgScene.scene );
 
             //setup camera
-            var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(0, 0, -20), MfgScene.scene);
+            var camera = new BABYLON.FreeCamera( "Camera", new BABYLON.Vector3( 0, 0, -20 ), MfgScene.scene );
             camera.checkCollisions = true;
             camera.applyGravity    = true;
             camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
@@ -85,13 +85,9 @@
 
 
             // Ground
-            var ground = BABYLON.Mesh.CreateBox( "Ground", 1, MfgScene.scene );
-            ground.scaling = new BABYLON.Vector3(100, 1, 100);
-            ground.position.y = -5.0;
-            ground.checkCollisions = true;
-            ground.material = MfgMaterial.groundMat;
-            ground.receiveShadows = true;
-            ground.setPhysicsState( BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.5, restitution: 0.7 } );
+            MfgScene.setupGround();
+
+
 
             // Spheres
             if ( MfgScene.spawnSpheres )
@@ -208,5 +204,13 @@
                 border2.material = MfgMaterial.groundMat;
                 border3.material = MfgMaterial.groundMat;
             }
+        }
+
+        /*****************************************************************************
+        *   Sets up the ground for the scene.
+        *****************************************************************************/
+        private static setupGround():void
+        {
+            MfgSceneFactory.createBox( "Ground", MfgMaterial.groundMat, MfgScene.scene );
         }
     }
