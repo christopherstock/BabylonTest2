@@ -16,22 +16,21 @@
         /*****************************************************************************
         *   Inits all materials being used in the game.
         *****************************************************************************/
-        public static initMaterials()
+        public static initMaterials( scene:BABYLON.Scene )
         {
-            // Materials
-            MfgMaterial.materialMFLogo = new BABYLON.StandardMaterial("amiga", MfgScene.scene);
-            MfgMaterial.materialMFLogo.diffuseTexture = new BABYLON.Texture("res/image/texture/mfLogo.jpg", MfgScene.scene);
-            MfgMaterial.materialMFLogo.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+            MfgMaterial.materialMFLogo = new BABYLON.StandardMaterial( "amiga", scene );
+            MfgMaterial.materialMFLogo.diffuseTexture = new BABYLON.Texture( "res/image/texture/mfLogo.jpg", scene );
+            MfgMaterial.materialMFLogo.emissiveColor = new BABYLON.Color3( 0.5, 0.5, 0.5 );
             MfgMaterial.materialMFLogo.diffuseTexture.uScale = 5;
             MfgMaterial.materialMFLogo.diffuseTexture.vScale = 5;
 
-            MfgMaterial.materialAmiga2 = new BABYLON.StandardMaterial("amiga", MfgScene.scene);
-            MfgMaterial.materialAmiga2.diffuseTexture = new BABYLON.Texture("res/image/texture/mosaic.jpg", MfgScene.scene);
-            MfgMaterial.materialAmiga2.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+            MfgMaterial.materialAmiga2 = new BABYLON.StandardMaterial( "amiga", scene );
+            MfgMaterial.materialAmiga2.diffuseTexture = new BABYLON.Texture( "res/image/texture/mosaic.jpg", scene );
+            MfgMaterial.materialAmiga2.emissiveColor = new BABYLON.Color3( 0.5, 0.5, 0.5 );
 
-            MfgMaterial.groundMat = new BABYLON.StandardMaterial("groundMat", MfgScene.scene);
-            MfgMaterial.groundMat.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-            MfgMaterial.groundMat.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+            MfgMaterial.groundMat = new BABYLON.StandardMaterial( "groundMat", scene );
+            MfgMaterial.groundMat.diffuseColor = new BABYLON.Color3( 0.5, 0.5, 0.5 );
+            MfgMaterial.groundMat.emissiveColor = new BABYLON.Color3( 0.2, 0.2, 0.2 );
             MfgMaterial.groundMat.backFaceCulling = false;
         }
     }

@@ -55,40 +55,33 @@
         *****************************************************************************/
         public static createScene()
         {
-            // Scene
+            //create scene
             MfgScene.scene = new BABYLON.Scene(MfgInit.engine);
             MfgScene.scene.clearColor = LibUI.COLOR_ORANGE_MAYFLOWER;
 
-            // Camera
+            //init materials
+            MfgMaterial.initMaterials( MfgScene.scene );
+
+            //setup camera
             var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(0, 0, -20), MfgScene.scene);
             camera.checkCollisions = true;
             camera.applyGravity = true;
             camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
 
-
-
-
-
-            // Lights
+            //setup lights
             var light = new BABYLON.DirectionalLight( "dir02", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
             light.position = new BABYLON.Vector3(0, 80, 0);
 
-
-
-
-
-            MfgMaterial.initMaterials()
-
-
-
-
-            // Shadows
+            //setup shadows
             var shadowGenerator = new BABYLON.ShadowGenerator( 2048, light );
-            //shadowGenerator.getShadowMap().renderList.push(box0);
 
-            // Physics
-            //scene.enablePhysics(null, new BABYLON.CannonJSPlugin());
+            //setup physics
             MfgScene.scene.enablePhysics( null, new BABYLON.OimoJSPlugin() );
+
+
+
+
+
 
             // Ground
             var ground = BABYLON.Mesh.CreateBox("Ground", 1, MfgScene.scene);
