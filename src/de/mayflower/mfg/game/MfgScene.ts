@@ -98,6 +98,8 @@
             if ( MfgScene.spawnBox0     ) MfgScene.setupBox0();
             if ( MfgScene.spawnCompound ) MfgScene.setupCompound();
             if ( MfgScene.spawnBorders  ) MfgScene.setupGlassPanes();
+
+            MfgScene.setupSkybox();
         }
 
         /*****************************************************************************
@@ -335,5 +337,23 @@
             var tree6        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
             tree6.position   = new BABYLON.Vector3( 45.0, 5.0, 40.0 );
             tree6.size       = 20.0;
+        }
+
+        /*****************************************************************************
+        *   Sets up the skybox.
+        *****************************************************************************/
+        private static setupSkybox()
+        {
+            // Skybox
+            var skybox = BABYLON.Mesh.CreateBox("skyBox", 500.0, MfgScene.scene);
+            var skyboxMaterial = new BABYLON.StandardMaterial("skyBox", MfgScene.scene);
+            //skybox.position.z -= 200.0;
+            skyboxMaterial.backFaceCulling = false;
+            skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture( MfgSettings.PATH_IMAGE_TEXTURE + "skybox", MfgScene.scene);
+            skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+            skyboxMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+            skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
+            //skyboxMaterial.disableLighting = true;
+            skybox.material = skyboxMaterial;
         }
     }
