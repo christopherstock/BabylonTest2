@@ -7,12 +7,15 @@
     *****************************************************************************/
     class MfgScene
     {
-        public              static                          scene                       :BABYLON.Scene      = null;
+        public          static                  SPHERES_TO_SPAWN        :number                     = 250;
 
-        public              static                          spawnSpheres                :boolean            = true;
-        public              static                          spawnBox0                   :boolean            = true;
-        public              static                          spawnCompound               :boolean            = true;
-        public              static                          spawnBorders                :boolean            = false;
+        public          static                  scene                   :BABYLON.Scene              = null;
+        public          static                  shadowGenerator         :BABYLON.ShadowGenerator    = null;
+
+        public          static                  spawnSpheres            :boolean                    = true;
+        public          static                  spawnBox0               :boolean                    = true;
+        public          static                  spawnCompound           :boolean                    = true;
+        public          static                  spawnBorders            :boolean                    = false;
 
         /*****************************************************************************
         *   Sets up the scene.
@@ -74,136 +77,17 @@
             light.position = new BABYLON.Vector3(0, 80, 0);
 
             //setup shadows
-            var shadowGenerator = new BABYLON.ShadowGenerator( 2048, light );
+            MfgScene.shadowGenerator = new BABYLON.ShadowGenerator( 2048, light );
 
             //setup physics
             MfgScene.scene.enablePhysics( null, new BABYLON.OimoJSPlugin() );
 
-
-
-
-
-
-            // Ground
+            //setup all scene data
             MfgScene.setupGround();
-
-
-
-            // Spheres
-            if ( MfgScene.spawnSpheres )
-            {
-                var y = 0;
-                for (var index = 0; index < 100; index++) {
-                    var sphere = BABYLON.Mesh.CreateSphere("Sphere0", 16, 3, MfgScene.scene);
-                    sphere.material = MfgMaterial.materialMFLogo;
-                    sphere.position = new BABYLON.Vector3(Math.random() * 20 - 10, y, Math.random() * 10 - 5);
-
-                    shadowGenerator.getShadowMap().renderList.push(sphere);
-
-                    sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
-
-                    y += 2;
-                }
-
-                // Link
-                var spheres = [];
-                for (index = 0; index < 10; index++)
-                {
-                    sphere = BABYLON.Mesh.CreateSphere("Sphere0", 16, 1, MfgScene.scene);
-                    spheres.push(sphere);
-                    sphere.material = MfgMaterial.materialAmiga2;
-                    sphere.position = new BABYLON.Vector3(Math.random() * 20 - 10, y, Math.random() * 10 - 5);
-
-                    shadowGenerator.getShadowMap().renderList.push(sphere);
-
-                    sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
-                }
-
-                for (index = 0; index < 10; index++) {
-                    spheres[index].setPhysicsLinkWith(spheres[index + 1], new BABYLON.Vector3(0, 0.5, 0), new BABYLON.Vector3(0, -0.5, 0));
-                }
-            }
-
-            // Box 0
-            if ( MfgScene.spawnBox0 )
-            {
-                // Box
-                var box0 = BABYLON.Mesh.CreateBox("Box0", 3, MfgScene.scene);
-                box0.position = new BABYLON.Vector3(3, 30, 0);
-                var materialWood = new BABYLON.StandardMaterial("wood", MfgScene.scene);
-                materialWood.diffuseTexture = new BABYLON.Texture("res/image/texture/wood.jpg", MfgScene.scene);
-                materialWood.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-                box0.material = materialWood;
-
-                shadowGenerator.getShadowMap().renderList.push(box0);
-
-                box0.setPhysicsState(   BABYLON.PhysicsEngine.BoxImpostor, { mass: 2, friction: 0.4, restitution: 0.3 } );
-            }
-
-            // Compound
-            if ( MfgScene.spawnCompound )
-            {
-                // Compound
-                var part0 = BABYLON.Mesh.CreateBox("part0", 3, MfgScene.scene);
-                part0.position = new BABYLON.Vector3(3, 30, 0);
-                part0.material = materialWood;
-
-                var part1 = BABYLON.Mesh.CreateBox("part1", 3, MfgScene.scene);
-                part1.parent = part0; // We need a hierarchy for compound objects
-                part1.position = new BABYLON.Vector3(0, 3, 0);
-                part1.material = materialWood;
-
-                shadowGenerator.getShadowMap().renderList.push(part0);
-                shadowGenerator.getShadowMap().renderList.push(part1);
-
-                MfgScene.scene.createCompoundImpostor(
-                    [
-                        { mesh: part0, impostor: BABYLON.PhysicsEngine.BoxImpostor },
-                        { mesh: part1, impostor: BABYLON.PhysicsEngine.BoxImpostor },
-                    ],
-                    {
-                        mass: 2, friction: 0.4, restitution: 0.3
-                    }
-                );
-            }
-
-            // Borders
-            if ( MfgScene.spawnBorders )
-            {
-                var border0 = BABYLON.Mesh.CreateBox("border0", 1, MfgScene.scene);
-                border0.scaling = new BABYLON.Vector3(1, 100, 100);
-                border0.position.y = -5.0;
-                border0.position.x = -50.0;
-                border0.checkCollisions = true;
-
-                var border1 = BABYLON.Mesh.CreateBox("border1", 1, MfgScene.scene);
-                border1.scaling = new BABYLON.Vector3(1, 100, 100);
-                border1.position.y = -5.0;
-                border1.position.x = 50.0;
-                border1.checkCollisions = true;
-
-                var border2 = BABYLON.Mesh.CreateBox("border2", 1, MfgScene.scene);
-                border2.scaling = new BABYLON.Vector3(100, 100, 1);
-                border2.position.y = -5.0;
-                border2.position.z = 50.0;
-                border2.checkCollisions = true;
-
-                var border3 = BABYLON.Mesh.CreateBox("border3", 1, MfgScene.scene);
-                border3.scaling = new BABYLON.Vector3(100, 100, 1);
-                border3.position.y = -5.0;
-                border3.position.z = -50.0;
-                border3.checkCollisions = true;
-
-                border0.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-                border1.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-                border2.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-                border3.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-
-                border0.material = MfgMaterial.groundMat;
-                border1.material = MfgMaterial.groundMat;
-                border2.material = MfgMaterial.groundMat;
-                border3.material = MfgMaterial.groundMat;
-            }
+            if ( MfgScene.spawnSpheres  ) MfgScene.setupSpheres();
+            if ( MfgScene.spawnBox0     ) MfgScene.setupBox0();
+            if ( MfgScene.spawnCompound ) MfgScene.setupCompound();
+            if ( MfgScene.spawnBorders  ) MfgScene.setupBorders();
         }
 
         /*****************************************************************************
@@ -217,7 +101,7 @@
                 new BABYLON.Vector3( 100.0, 1.0,  100.0 ),
                 new BABYLON.Vector3( 0.0,   0.0,  0.0   ),
                 0.0,
-                MfgMaterial.groundMat,
+                MfgMaterial.materialGround,
                 MfgScene.scene
             );
 
@@ -227,7 +111,7 @@
                 new BABYLON.Vector3( 100.0, 1.0,   100.0  ),
                 new BABYLON.Vector3( 1.0,   0.0, 0.0 ),
                 -0.45,
-                MfgMaterial.groundMat,
+                MfgMaterial.materialGround,
                 MfgScene.scene
             );
 
@@ -237,8 +121,131 @@
                 new BABYLON.Vector3( 100.0, 1.0,   100.0  ),
                 new BABYLON.Vector3( 0.0,   0.0,   0.0    ),
                 0.0,
-                MfgMaterial.groundMat,
+                MfgMaterial.materialGround,
                 MfgScene.scene
             );
+        }
+
+        /*****************************************************************************
+        *   Sets up the spheres for the scene.
+        *****************************************************************************/
+        private static setupSpheres():void
+        {
+            var y = 0;
+            for ( var index = 0; index < MfgScene.SPHERES_TO_SPAWN; index++ )
+            {
+                var sphere = BABYLON.Mesh.CreateSphere( "Sphere0", 16, 3, MfgScene.scene );
+                sphere.material = MfgMaterial.materialMFLogo;
+                sphere.position = new BABYLON.Vector3( Math.random() * 20 - 10, y, Math.random() * 10 - 5 );
+
+                MfgScene.shadowGenerator.getShadowMap().renderList.push(sphere);
+
+                sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
+
+                y += 2;
+            }
+
+            // Add 10 linked sheres
+            var spheres = [];
+            for (index = 0; index < 10; index++)
+            {
+                sphere = BABYLON.Mesh.CreateSphere("Sphere0", 16, 1, MfgScene.scene);
+                spheres.push(sphere);
+                sphere.material = MfgMaterial.materialAmiga;
+                sphere.position = new BABYLON.Vector3(Math.random() * 20 - 10, y, Math.random() * 10 - 5);
+
+                MfgScene.shadowGenerator.getShadowMap().renderList.push(sphere);
+
+                sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
+            }
+
+            for (index = 0; index < 10; index++)
+            {
+                spheres[index].setPhysicsLinkWith(spheres[index + 1], new BABYLON.Vector3(0, 0.5, 0), new BABYLON.Vector3(0, -0.5, 0));
+            }
+        }
+
+        /*****************************************************************************
+        *   Sets up the box0 for the scene.
+        *****************************************************************************/
+        private static setupBox0()
+        {
+            // Box
+            var box0 = BABYLON.Mesh.CreateBox("Box0", 3, MfgScene.scene);
+            box0.position = new BABYLON.Vector3(3, 30, 0);
+            box0.material = MfgMaterial.materialWood;
+
+            MfgScene.shadowGenerator.getShadowMap().renderList.push(box0);
+
+            box0.setPhysicsState(   BABYLON.PhysicsEngine.BoxImpostor, { mass: 2, friction: 0.4, restitution: 0.3 } );
+        }
+
+        /*****************************************************************************
+        *   Sets up the compound for the scene.
+        *****************************************************************************/
+        private static setupCompound()
+        {
+            // Compound
+            var part0 = BABYLON.Mesh.CreateBox("part0", 3, MfgScene.scene);
+            part0.position = new BABYLON.Vector3(3, 30, 0);
+            part0.material = MfgMaterial.materialWood;
+
+            var part1 = BABYLON.Mesh.CreateBox("part1", 3, MfgScene.scene);
+            part1.parent = part0; // We need a hierarchy for compound objects
+            part1.position = new BABYLON.Vector3(0, 3, 0);
+            part1.material = MfgMaterial.materialWood;
+
+            MfgScene.shadowGenerator.getShadowMap().renderList.push(part0);
+            MfgScene.shadowGenerator.getShadowMap().renderList.push(part1);
+
+            MfgScene.scene.createCompoundImpostor(
+                [
+                    { mesh: part0, impostor: BABYLON.PhysicsEngine.BoxImpostor },
+                    { mesh: part1, impostor: BABYLON.PhysicsEngine.BoxImpostor },
+                ],
+                {
+                    mass: 2, friction: 0.4, restitution: 0.3
+                }
+            );
+        }
+
+        /*****************************************************************************
+        *   Sets up the borders for the scene.
+        *****************************************************************************/
+        private static setupBorders()
+        {
+            var border0 = BABYLON.Mesh.CreateBox("border0", 1, MfgScene.scene);
+            border0.scaling = new BABYLON.Vector3(1, 100, 100);
+            border0.position.y = -5.0;
+            border0.position.x = -50.0;
+            border0.checkCollisions = true;
+
+            var border1 = BABYLON.Mesh.CreateBox("border1", 1, MfgScene.scene);
+            border1.scaling = new BABYLON.Vector3(1, 100, 100);
+            border1.position.y = -5.0;
+            border1.position.x = 50.0;
+            border1.checkCollisions = true;
+
+            var border2 = BABYLON.Mesh.CreateBox("border2", 1, MfgScene.scene);
+            border2.scaling = new BABYLON.Vector3(100, 100, 1);
+            border2.position.y = -5.0;
+            border2.position.z = 50.0;
+            border2.checkCollisions = true;
+
+            var border3 = BABYLON.Mesh.CreateBox("border3", 1, MfgScene.scene);
+            border3.scaling = new BABYLON.Vector3(100, 100, 1);
+            border3.position.y = -5.0;
+            border3.position.z = -50.0;
+            border3.checkCollisions = true;
+
+            border0.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+            border1.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+            border2.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+            border3.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+
+            border0.material = MfgMaterial.materialGround;
+            border1.material = MfgMaterial.materialGround;
+            border2.material = MfgMaterial.materialGround;
+            border3.material = MfgMaterial.materialGround;
         }
     }
