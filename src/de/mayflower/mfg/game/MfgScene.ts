@@ -7,7 +7,7 @@
     *****************************************************************************/
     class MfgScene
     {
-        public static loadCustomScene( then )
+        public static loadScene()
         {
             BABYLON.SceneLoader.ShowLoadingScreen = false;
             MfgInit.engine.displayLoadingUI();
@@ -16,16 +16,21 @@
                 MfgInit.scene = MfgScene.CreatePhysicsScene(MfgInit.engine);
 
                 if (MfgInit.scene.activeCamera) {
-                    MfgInit.scene.activeCamera.attachControl(MfgInit.canvas, false);
+                    MfgInit.scene.activeCamera.attachControl(MfgInit.canvas);
                 }
 
                 MfgInit.scene.executeWhenReady(function () {
                     MfgInit.canvas.style.opacity = "1";
                     MfgInit.engine.hideLoadingUI();
                     BABYLON.SceneLoader.ShowLoadingScreen = true;
-                    if (then) {
-                        then(MfgInit.scene);
-                    }
+
+                    MfgInit.scene.onPointerDown = function (evt, pickResult) {
+                        if (pickResult.hit) {
+                            var dir = pickResult.pickedPoint.subtract(MfgInit.scene.activeCamera.position);
+                            dir.normalize();
+                            pickResult.pickedMesh.applyImpulse(dir.scale(10), pickResult.pickedPoint);
+                        }
+                    };
                 });
             }, 15);
         }

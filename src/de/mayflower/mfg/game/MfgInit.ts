@@ -8,12 +8,9 @@
     class MfgInit
     {
         public          static      canvas          :HTMLCanvasElement          = null;
-
         public          static      divFps          :HTMLDivElement             = null;
-
         public          static      engine          :BABYLON.Engine             = null;
-
-        public          static      scene           :any                        = null;
+        public          static      scene           :BABYLON.Scene              = null;
 
         /*****************************************************************************
         *   Inits this app from scratch.
@@ -45,19 +42,6 @@
             MfgInit.engine.runRenderLoop( MfgGame.render );
 
             //load the scene
-            MfgScene.loadCustomScene(
-
-
-
-                function (scene) {
-                    scene.onPointerDown = function (evt, pickResult) {
-                        if (pickResult.hit) {
-                            var dir = pickResult.pickedPoint.subtract(scene.activeCamera.position);
-                            dir.normalize();
-                            pickResult.pickedMesh.applyImpulse(dir.scale(10), pickResult.pickedPoint);
-                        }
-                    };
-                }
-            );
+            MfgScene.loadScene();
         }
     }
