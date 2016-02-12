@@ -26,17 +26,23 @@
                     }
 
                     MfgScene.scene.executeWhenReady(
-                        function () {
-                            MfgInit.canvas.style.opacity = "1";
-                            MfgInit.engine.hideLoadingUI();
-                            BABYLON.SceneLoader.ShowLoadingScreen = true;
-
-                            MfgScene.scene.onPointerDown = MfgPointer.assignPointerDown;
-                        }
+                        MfgScene.initSceneCompleted
                     );
                 },
                 20
             );
+        }
+
+        /*****************************************************************************
+        *   Being invoked when the scene is set up.
+        *****************************************************************************/
+        public static initSceneCompleted()
+        {
+            MfgInit.canvas.style.opacity = "1";
+            MfgInit.engine.hideLoadingUI();
+            BABYLON.SceneLoader.ShowLoadingScreen = true;
+
+            MfgScene.scene.onPointerDown = MfgPointer.assignPointerDown;
         }
 
         /*****************************************************************************
