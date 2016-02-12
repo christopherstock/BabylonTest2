@@ -63,27 +63,23 @@
             var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(0, 0, -20), MfgScene.scene);
             camera.checkCollisions = true;
             camera.applyGravity = true;
-            camera.setTarget(new BABYLON.Vector3(0, 0, 0));
+            camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
+
+
+
+
 
             // Lights
-            var light = new BABYLON.DirectionalLight("dir02", new BABYLON.Vector3(0.2, -1, 0), MfgScene.scene);
+            var light = new BABYLON.DirectionalLight( "dir02", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
             light.position = new BABYLON.Vector3(0, 80, 0);
 
-            // Materials
-            var materialAmiga = new BABYLON.StandardMaterial("amiga", MfgScene.scene);
-            materialAmiga.diffuseTexture = new BABYLON.Texture("res/image/texture/mfLogo.jpg", MfgScene.scene);
-            materialAmiga.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-            materialAmiga.diffuseTexture.uScale = 5;
-            materialAmiga.diffuseTexture.vScale = 5;
 
-            var materialAmiga2 = new BABYLON.StandardMaterial("amiga", MfgScene.scene);
-            materialAmiga2.diffuseTexture = new BABYLON.Texture("res/image/texture/mosaic.jpg", MfgScene.scene);
-            materialAmiga2.emissiveColor = new BABYLON.Color3(0.5, 0.5, 0.5);
 
-            var groundMat = new BABYLON.StandardMaterial("groundMat", MfgScene.scene);
-            groundMat.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
-            groundMat.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
-            groundMat.backFaceCulling = false;
+
+
+            MfgMaterial.initMaterials()
+
+
 
 
             // Shadows
@@ -99,7 +95,7 @@
             ground.scaling = new BABYLON.Vector3(100, 1, 100);
             ground.position.y = -5.0;
             ground.checkCollisions = true;
-            ground.material = groundMat;
+            ground.material = MfgMaterial.groundMat;
             ground.receiveShadows = true;
             ground.setPhysicsState( BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.5, restitution: 0.7 } );
 
@@ -109,7 +105,7 @@
                 var y = 0;
                 for (var index = 0; index < 100; index++) {
                     var sphere = BABYLON.Mesh.CreateSphere("Sphere0", 16, 3, MfgScene.scene);
-                    sphere.material = materialAmiga;
+                    sphere.material = MfgMaterial.materialMFLogo;
                     sphere.position = new BABYLON.Vector3(Math.random() * 20 - 10, y, Math.random() * 10 - 5);
 
                     shadowGenerator.getShadowMap().renderList.push(sphere);
@@ -125,7 +121,7 @@
                 {
                     sphere = BABYLON.Mesh.CreateSphere("Sphere0", 16, 1, MfgScene.scene);
                     spheres.push(sphere);
-                    sphere.material = materialAmiga2;
+                    sphere.material = MfgMaterial.materialAmiga2;
                     sphere.position = new BABYLON.Vector3(Math.random() * 20 - 10, y, Math.random() * 10 - 5);
 
                     shadowGenerator.getShadowMap().renderList.push(sphere);
@@ -213,10 +209,10 @@
                 border2.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
                 border3.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
 
-                border0.material = groundMat;
-                border1.material = groundMat;
-                border2.material = groundMat;
-                border3.material = groundMat;
+                border0.material = MfgMaterial.groundMat;
+                border1.material = MfgMaterial.groundMat;
+                border2.material = MfgMaterial.groundMat;
+                border3.material = MfgMaterial.groundMat;
             }
         }
     }

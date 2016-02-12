@@ -18,3 +18,4 @@
 /// <reference path="src/de/mayflower/mfg/game/MfgInit.ts" />
 /// <reference path="src/de/mayflower/mfg/hid/MfgKey.ts" />
 /// <reference path="src/de/mayflower/mfg/hid/MfgPointer.ts" />
+/// <reference path="src/de/mayflower/mfg/game/MfgMaterial.ts" />
