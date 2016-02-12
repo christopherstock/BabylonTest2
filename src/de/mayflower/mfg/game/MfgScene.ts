@@ -8,6 +8,7 @@
     class MfgScene
     {
         public          static                  SPHERES_TO_SPAWN        :number                     = 250;
+        public          static                  CAMERA_STARTUP          :BABYLON.Vector3            = new BABYLON.Vector3( -80.0, 40.0, -80.0 );
 
         public          static                  scene                   :BABYLON.Scene              = null;
         public          static                  shadowGenerator         :BABYLON.ShadowGenerator    = null;
@@ -59,7 +60,7 @@
         public static createScene()
         {
             //create scene
-            MfgScene.scene            = new BABYLON.Scene(MfgInit.engine);
+            MfgScene.scene            = new BABYLON.Scene( MfgInit.engine );
             MfgScene.scene.clearColor = LibUI.COLOR_ORANGE_MAYFLOWER;
             MfgScene.scene.gravity    = new BABYLON.Vector3( 0, MfgSettings.GRAVITY, 0 );
 
@@ -67,14 +68,14 @@
             MfgMaterial.initMaterials( MfgScene.scene );
 
             //setup camera
-            var camera = new BABYLON.FreeCamera( "Camera", new BABYLON.Vector3( 0, 0, -20 ), MfgScene.scene );
+            var camera = new BABYLON.FreeCamera( "Camera", MfgScene.CAMERA_STARTUP, MfgScene.scene );
             camera.checkCollisions = true;
             camera.applyGravity    = true;
             camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
 
             //setup lights
             var light = new BABYLON.DirectionalLight( "dir02", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
-            light.position = new BABYLON.Vector3(0, 80, 0);
+            light.position  = new BABYLON.Vector3( 0, 80, 0 );
 
             //setup shadows
             MfgScene.shadowGenerator = new BABYLON.ShadowGenerator( 2048, light );
@@ -84,10 +85,12 @@
 
             //setup all scene data
             MfgScene.setupGround();
+            MfgScene.setupCollidableBox();
+
             if ( MfgScene.spawnSpheres  ) MfgScene.setupSpheres();
             if ( MfgScene.spawnBox0     ) MfgScene.setupBox0();
             if ( MfgScene.spawnCompound ) MfgScene.setupCompound();
-            if ( MfgScene.spawnBorders  ) MfgScene.setupBorders();
+            if ( MfgScene.spawnBorders  ) MfgScene.setupGlassPanes();
         }
 
         /*****************************************************************************
@@ -101,7 +104,7 @@
                 new BABYLON.Vector3( 100.0, 1.0,  100.0 ),
                 new BABYLON.Vector3( 0.0,   0.0,  0.0   ),
                 0.0,
-                MfgMaterial.materialGround,
+                MfgMaterial.materialGrass,
                 MfgScene.scene
             );
 
@@ -111,7 +114,7 @@
                 new BABYLON.Vector3( 100.0, 1.0,   100.0  ),
                 new BABYLON.Vector3( 1.0,   0.0, 0.0 ),
                 -0.45,
-                MfgMaterial.materialGround,
+                MfgMaterial.materialGrass,
                 MfgScene.scene
             );
 
@@ -121,7 +124,7 @@
                 new BABYLON.Vector3( 100.0, 1.0,   100.0  ),
                 new BABYLON.Vector3( 0.0,   0.0,   0.0    ),
                 0.0,
-                MfgMaterial.materialGround,
+                MfgMaterial.materialGrass,
                 MfgScene.scene
             );
         }
@@ -145,7 +148,7 @@
                 y += 2;
             }
 
-            // Add 10 linked sheres
+            // Add 10 linked spheres
             var spheres = [];
             for (index = 0; index < 10; index++)
             {
@@ -171,9 +174,9 @@
         private static setupBox0()
         {
             // Box
-            var box0 = BABYLON.Mesh.CreateBox("Box0", 3, MfgScene.scene);
-            box0.position = new BABYLON.Vector3(3, 30, 0);
-            box0.material = MfgMaterial.materialWood;
+            var box0             = BABYLON.Mesh.CreateBox("Box0", 3, MfgScene.scene);
+            box0.position        = new BABYLON.Vector3(3, 30, 0);
+            box0.material        = MfgMaterial.materialWood;
 
             MfgScene.shadowGenerator.getShadowMap().renderList.push(box0);
 
@@ -212,50 +215,38 @@
         /*****************************************************************************
         *   Sets up the borders for the scene.
         *****************************************************************************/
-        private static setupBorders()
+        private static setupGlassPanes()
         {
-            var border0 = BABYLON.Mesh.CreateBox("border0", 1, MfgScene.scene);
-            border0.scaling         = new BABYLON.Vector3(1, 100, 100);
-            border0.position.x      = -50.0;
-            border0.position.y      = 45.0;
-            border0.position.z      = 0.0;
-            border0.checkCollisions = true;
+            var glassPane1              = BABYLON.Mesh.CreateBox( "border0", 1.0, MfgScene.scene );
+            glassPane1.position         = new BABYLON.Vector3( 0.0,   5.0,  0.0  );
+            glassPane1.scaling          = new BABYLON.Vector3( 1.0,   20.0, 50.0 );
+            glassPane1.checkCollisions  = true;
 
-/*
-            var border1 = BABYLON.Mesh.CreateBox("border1", 1, MfgScene.scene);
-            border1.scaling = new BABYLON.Vector3(1, 100, 100);
-            border1.position.y = -5.0;
-            border1.position.x = 50.0;
-            border1.checkCollisions = true;
-*/
-            var border2 = BABYLON.Mesh.CreateBox("border2", 1, MfgScene.scene);
-            border2.scaling = new BABYLON.Vector3(100, 100, 1);
-            border2.position.y = -5.0;
-            border2.position.z = 50.0;
-            border2.checkCollisions = true;
+            var glassPane2              = BABYLON.Mesh.CreateBox( "border2", 1.0, MfgScene.scene );
+            glassPane2.position         = new BABYLON.Vector3( 0.0,   5.0,  0.0 );
+            glassPane2.scaling          = new BABYLON.Vector3( 50.0,  20.0, 1.0 );
+            glassPane2.checkCollisions  = true;
 
-/*
-            var border3 = BABYLON.Mesh.CreateBox("border3", 1, MfgScene.scene);
-            border3.scaling = new BABYLON.Vector3(100, 100, 1);
-            border3.position.y = -5.0;
-            border3.position.z = -50.0;
-            border3.checkCollisions = true;
-*/
-            border0.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-/*
-            border1.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-*/
-            border2.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-/*
-            border3.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-*/
-            border0.material = MfgMaterial.materialGround;
-/*
-            border1.material = MfgMaterial.materialGround;
-*/
-            border2.material = MfgMaterial.materialGround;
-/*
-            border3.material = MfgMaterial.materialGround;
-*/
+            glassPane1.setPhysicsState( BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+            glassPane2.setPhysicsState( BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+
+            glassPane1.material = MfgMaterial.materialGlass;
+            glassPane2.material = MfgMaterial.materialGlass;
+
+            MfgScene.shadowGenerator.getShadowMap().renderList.push( glassPane1 );
+            MfgScene.shadowGenerator.getShadowMap().renderList.push( glassPane2 );
+        }
+
+        /*****************************************************************************
+        *   Sets up a collidable box.
+        *****************************************************************************/
+        private static setupCollidableBox()
+        {
+            var solidBox = BABYLON.Mesh.CreateBox("box1", 1.0, MfgScene.scene);
+            solidBox.scaling         = new BABYLON.Vector3( 3.0,  3.0,  3.0   );
+            solidBox.position        = new BABYLON.Vector3( 45.0, -2.0, -45.0 );
+            solidBox.checkCollisions = true;
+
+            solidBox.material = MfgMaterial.materialAmiga;
         }
     }

@@ -8,5 +8,5 @@
     class LibUI
     {
         /** The RGBA statement representing color 'orange mayflower'. */
-        public      static  COLOR_ORANGE_MAYFLOWER                  :BABAYLON.Color3    = new BABYLON.Color3( 0.92, 0.45, 0.01 );
+        public      static  COLOR_ORANGE_MAYFLOWER                  :BABYLON.Color3    = new BABYLON.Color3( 0.92, 0.45, 0.01 );
     }
