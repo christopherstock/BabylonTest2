@@ -57,7 +57,7 @@
         {
             // Scene
             MfgScene.scene = new BABYLON.Scene(MfgInit.engine);
-            MfgScene.scene.clearColor = BABYLON.Color3.Purple();
+            MfgScene.scene.clearColor = LibUI.COLOR_ORANGE_MAYFLOWER;
 
             // Camera
             var camera = new BABYLON.FreeCamera("Camera", new BABYLON.Vector3(0, 0, -20), MfgScene.scene);
