@@ -213,16 +213,30 @@
         {
             MfgSceneFactory.createBox(
                 "Ground1",
-                new BABYLON.Vector3( 0.0, -5.0, 0.0 ),
-                new BABYLON.Vector3( 100, 1, 100 ),
+                new BABYLON.Vector3( 0.0,   -4.4, 1.0   ),
+                new BABYLON.Vector3( 100.0, 1.0,  100.0 ),
+                new BABYLON.Vector3( 0.0,   0.0,  0.0   ),
+                0.0,
                 MfgMaterial.groundMat,
                 MfgScene.scene
             );
 
             MfgSceneFactory.createBox(
                 "Ground2",
-                new BABYLON.Vector3( 0.0, -25.0, -100.0 ),
-                new BABYLON.Vector3( 100, 1, 100 ),
+                new BABYLON.Vector3( 0.0,   -26.0, -93.5 ),
+                new BABYLON.Vector3( 100.0, 1.0,   100.0  ),
+                new BABYLON.Vector3( 1.0,   0.0, 0.0 ),
+                -0.45,
+                MfgMaterial.groundMat,
+                MfgScene.scene
+            );
+
+            MfgSceneFactory.createBox(
+                "Ground3",
+                new BABYLON.Vector3( 0.0,   -48.0, -185.0 ),
+                new BABYLON.Vector3( 100.0, 1.0,   100.0  ),
+                new BABYLON.Vector3( 0.0,   0.0,   0.0    ),
+                0.0,
                 MfgMaterial.groundMat,
                 MfgScene.scene
             );

@@ -19,7 +19,7 @@
         public      static      CANVAS_HEIGHT                               :number             = 600;
 
         /** The scene's gravity. */
-        public      static      GRAVITY                                     :number             = -0.05;
+        public      static      GRAVITY                                     :number             = -0.01;
 
 
 

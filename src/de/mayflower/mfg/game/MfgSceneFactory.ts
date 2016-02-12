@@ -12,11 +12,13 @@
         *****************************************************************************/
         public static createBox
         (
-            id       :string,
-            position :BABYLON.Vector3,
-            scaling  :BABYLON.Vector3,
-            material :BABYLON.Material,
-            scene    :BABYLON.Scene
+            id              :string,
+            position        :BABYLON.Vector3,
+            scaling         :BABYLON.Vector3,
+            rotationAxis    :BABYLON.Vector3,
+            rotationAmount  :number,
+            material        :BABYLON.Material,
+            scene           :BABYLON.Scene
         )
         :BABYLON.Mesh
         {
@@ -27,6 +29,8 @@
             ground.checkCollisions  = true;
             ground.material         = material;
             ground.receiveShadows   = true;
+
+            ground.rotate( rotationAxis, rotationAmount, BABYLON.Space.WORLD );
             ground.setPhysicsState
             (
                 BABYLON.PhysicsEngine.BoxImpostor,
