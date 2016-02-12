@@ -56,7 +56,6 @@
         public static initSceneCompleted()
         {
             MfgInit.canvas.style.opacity = "1";
-            MfgInit.engine.hideLoadingUI();
             BABYLON.SceneLoader.ShowLoadingScreen = true;
 
             MfgScene.scene.onPointerDown = MfgPointer.assignPointerDown;
@@ -382,6 +381,9 @@
                     rabbit.rotate( new BABYLON.Vector3( 0.0, 1.0, 0.0 ), 135.0, BABYLON.Space.LOCAL );
 
                     //rabbit.checkCollisions = true;
+
+                    //NOW hide the loading UI! :D
+                    MfgInit.engine.hideLoadingUI();
                 }
             );
         }
