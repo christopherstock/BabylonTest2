@@ -11,6 +11,8 @@
 
         public          static      divFps          :HTMLDivElement             = null;
 
+        public          static      engine          :BABYLON.Engine             = null;
+
         /*****************************************************************************
         *   Inits this app from scratch.
         *****************************************************************************/
@@ -23,15 +25,17 @@
             document.title = MfgSettings.TITLE;
 
             //reference canvas element and fps counter div
-            MfgInit.canvas = <HTMLCanvasElement>document.getElementById("renderCanvas");
-            MfgInit.divFps = <HTMLDivElement>   document.getElementById("fps");
+            MfgInit.canvas = <HTMLCanvasElement>document.getElementById( "renderCanvas" );
+            MfgInit.divFps = <HTMLDivElement>   document.getElementById( "fps"          );
+
+            //init Babylin.js engine
+            MfgInit.engine = new BABYLON.Engine( MfgInit.canvas, true );
 
 
 
 
 
-            // Babylon
-            var engine = new BABYLON.Engine(MfgInit.canvas, true);
+
             var scene;
 
             var demo = {
@@ -49,18 +53,18 @@
 
             var loadCustomScene = function (demoConstructor, then) {
                 BABYLON.SceneLoader.ShowLoadingScreen = false;
-                engine.displayLoadingUI();
+                MfgInit.engine.displayLoadingUI();
 
                 setTimeout(function () {
-                    scene = demoConstructor(engine);
+                    scene = demoConstructor(MfgInit.engine);
 
                     if (scene.activeCamera) {
                         scene.activeCamera.attachControl(MfgInit.canvas, false);
                     }
 
                     scene.executeWhenReady(function () {
-                        MfgInit.canvas.style.opacity = 1;
-                        engine.hideLoadingUI();
+                        MfgInit.canvas.style.opacity = "1";
+                        MfgInit.engine.hideLoadingUI();
                         BABYLON.SceneLoader.ShowLoadingScreen = true;
                         if (then) {
                             then(scene);
@@ -72,16 +76,11 @@
             // Render loop
             var renderFunction = function () {
                 // Fps
-                MfgInit.divFps.innerHTML = engine.getFps().toFixed() + " fps";
+                MfgInit.divFps.innerHTML = MfgInit.engine.getFps().toFixed() + " fps";
 
                 // Render scene
                 if (scene) {
-/*
-                    if (!sceneChecked) {
-                        var remaining = scene.getWaitingItemsCount();
-                        engine.loadingUIText = "Streaming items..." + (remaining ? (remaining + " remaining") : "");
-                    }
-*/
+
                     scene.render();
 
                     // Streams
@@ -96,11 +95,11 @@
 
             // Resize
             window.addEventListener("resize", function () {
-                engine.resize();
+                MfgInit.engine.resize();
             });
 
             //launch render loop
-            engine.runRenderLoop(renderFunction);
+            MfgInit.engine.runRenderLoop(renderFunction);
 
             //load the scene
             loadCustomScene(demo.constructor, demo.onload);
