@@ -33,10 +33,23 @@
             //init Babylon.js engine
             MfgInit.engine = new BABYLON.Engine( MfgInit.canvas, true );
 
-            //specify the demo
-            var demo = {
-                constructor: MfgScene.CreatePhysicsScene,
-                onload: function (scene) {
+            //add resize event listener
+            window.addEventListener(
+                "resize",
+                function () {
+                    MfgInit.engine.resize();
+                }
+            );
+
+            //launch render loop
+            MfgInit.engine.runRenderLoop( MfgGame.render );
+
+            //load the scene
+            MfgScene.loadCustomScene(
+
+
+
+                function (scene) {
                     scene.onPointerDown = function (evt, pickResult) {
                         if (pickResult.hit) {
                             var dir = pickResult.pickedPoint.subtract(scene.activeCamera.position);
@@ -45,17 +58,6 @@
                         }
                     };
                 }
-            };
-
-            // Resize
-            window.addEventListener("resize", function () {
-                MfgInit.engine.resize();
-            });
-
-            //launch render loop
-            MfgInit.engine.runRenderLoop(MfgGame.render);
-
-            //load the scene
-            MfgScene.loadCustomScene( demo.constructor, demo.onload );
+            );
         }
     }

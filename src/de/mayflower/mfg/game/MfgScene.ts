@@ -7,13 +7,13 @@
     *****************************************************************************/
     class MfgScene
     {
-        public static loadCustomScene( demoConstructor, then )
+        public static loadCustomScene( then )
         {
             BABYLON.SceneLoader.ShowLoadingScreen = false;
             MfgInit.engine.displayLoadingUI();
 
             setTimeout(function () {
-                MfgInit.scene = demoConstructor(MfgInit.engine);
+                MfgInit.scene = MfgScene.CreatePhysicsScene(MfgInit.engine);
 
                 if (MfgInit.scene.activeCamera) {
                     MfgInit.scene.activeCamera.attachControl(MfgInit.canvas, false);
