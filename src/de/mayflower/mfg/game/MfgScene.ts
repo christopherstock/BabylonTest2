@@ -19,6 +19,8 @@
 
         private         static                  shadowGenerator1        :BABYLON.ShadowGenerator    = null;
 
+        private         static                  spriteManager           :BABYLON.SpriteManager      = null;
+
         public          static                  spawnSpheres            :boolean                    = true;
         public          static                  spawnBox0               :boolean                    = true;
         public          static                  spawnCompound           :boolean                    = true;
@@ -82,15 +84,8 @@
             //setup shadows
             MfgScene.setupShadows();
 
-
-
-
-
-
-
-
-
-
+            //setup sprites
+            MfgScene.setupSprites();
 
             //setup physics
             MfgScene.scene.enablePhysics( null, new BABYLON.OimoJSPlugin() );
@@ -303,5 +298,37 @@
             MfgScene.shadowGenerator1                      = new BABYLON.ShadowGenerator( 2048, MfgScene.light1 );
             MfgScene.shadowGenerator1.useVarianceShadowMap = true;
             MfgScene.shadowGenerator1.usePoissonSampling   = true;
+        }
+
+        /*****************************************************************************
+        *   Sets up all sprites.
+        *****************************************************************************/
+        private static setupSprites()
+        {
+            MfgScene.spriteManager = new BABYLON.SpriteManager( "treesManager", MfgSettings.PATH_IMAGE_TEXTURE + "tree.png", 100, 357, MfgScene.scene );
+
+            var tree1        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
+            tree1.position   = new BABYLON.Vector3( 45.0, 5.0, -35.0 );
+            tree1.size       = 20.0;
+
+            var tree2        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
+            tree2.position   = new BABYLON.Vector3( 45.0, 5.0, -20.0 );
+            tree2.size       = 20.0;
+
+            var tree3        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
+            tree3.position   = new BABYLON.Vector3( 45.0, 5.0, -5.0 );
+            tree3.size       = 20.0;
+
+            var tree4        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
+            tree4.position   = new BABYLON.Vector3( 45.0, 5.0, 10.0 );
+            tree4.size       = 20.0;
+
+            var tree5        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
+            tree5.position   = new BABYLON.Vector3( 45.0, 5.0, 25.0 );
+            tree5.size       = 20.0;
+
+            var tree6        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
+            tree6.position   = new BABYLON.Vector3( 45.0, 5.0, 40.0 );
+            tree6.size       = 20.0;
         }
     }
