@@ -11,7 +11,8 @@
         public          static                  CAMERA_STARTUP          :BABYLON.Vector3            = new BABYLON.Vector3( -80.0, 40.0, -80.0 );
 
         public          static                  scene                   :BABYLON.Scene              = null;
-        public          static                  shadowGenerator         :BABYLON.ShadowGenerator    = null;
+        private         static                  shadowGenerator1         :BABYLON.ShadowGenerator    = null;
+        public          static                  camera                  :BABYLON.FreeCamera         = null;
 
         public          static                  spawnSpheres            :boolean                    = true;
         public          static                  spawnBox0               :boolean                    = true;
@@ -68,17 +69,20 @@
             MfgMaterial.initMaterials( MfgScene.scene );
 
             //setup camera
-            var camera = new BABYLON.FreeCamera( "Camera", MfgScene.CAMERA_STARTUP, MfgScene.scene );
-            camera.checkCollisions = true;
-            camera.applyGravity    = true;
-            camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
+            MfgScene.setupCamera();
 
             //setup lights
-            var light = new BABYLON.DirectionalLight( "dir02", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
-            light.position  = new BABYLON.Vector3( 0, 80, 0 );
+            MfgScene.setupLights();
 
-            //setup shadows
-            MfgScene.shadowGenerator = new BABYLON.ShadowGenerator( 2048, light );
+
+
+
+
+
+
+
+
+
 
             //setup physics
             MfgScene.scene.enablePhysics( null, new BABYLON.OimoJSPlugin() );
@@ -141,7 +145,7 @@
                 sphere.material = MfgMaterial.materialMFLogo;
                 sphere.position = new BABYLON.Vector3( Math.random() * 20 - 10, y, Math.random() * 10 - 5 );
 
-                MfgScene.shadowGenerator.getShadowMap().renderList.push(sphere);
+                MfgScene.shadowGenerator1.getShadowMap().renderList.push(sphere);
 
                 sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
 
@@ -157,7 +161,7 @@
                 sphere.material = MfgMaterial.materialAmiga;
                 sphere.position = new BABYLON.Vector3(Math.random() * 20 - 10, y, Math.random() * 10 - 5);
 
-                MfgScene.shadowGenerator.getShadowMap().renderList.push(sphere);
+                MfgScene.shadowGenerator1.getShadowMap().renderList.push(sphere);
 
                 sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
             }
@@ -178,7 +182,7 @@
             box0.position        = new BABYLON.Vector3(3, 30, 0);
             box0.material        = MfgMaterial.materialWood;
 
-            MfgScene.shadowGenerator.getShadowMap().renderList.push(box0);
+            MfgScene.shadowGenerator1.getShadowMap().renderList.push(box0);
 
             box0.setPhysicsState(   BABYLON.PhysicsEngine.BoxImpostor, { mass: 2, friction: 0.4, restitution: 0.3 } );
         }
@@ -198,8 +202,8 @@
             part1.position = new BABYLON.Vector3(0, 3, 0);
             part1.material = MfgMaterial.materialWood;
 
-            MfgScene.shadowGenerator.getShadowMap().renderList.push(part0);
-            MfgScene.shadowGenerator.getShadowMap().renderList.push(part1);
+            MfgScene.shadowGenerator1.getShadowMap().renderList.push(part0);
+            MfgScene.shadowGenerator1.getShadowMap().renderList.push(part1);
 
             MfgScene.scene.createCompoundImpostor(
                 [
@@ -233,8 +237,8 @@
             glassPane1.material = MfgMaterial.materialGlass;
             glassPane2.material = MfgMaterial.materialGlass;
 
-            MfgScene.shadowGenerator.getShadowMap().renderList.push( glassPane1 );
-            MfgScene.shadowGenerator.getShadowMap().renderList.push( glassPane2 );
+            //MfgScene.shadowGenerator.getShadowMap().renderList.push( glassPane1 );
+            //MfgScene.shadowGenerator.getShadowMap().renderList.push( glassPane2 );
         }
 
         /*****************************************************************************
@@ -248,5 +252,42 @@
             solidBox.checkCollisions = true;
 
             solidBox.material = MfgMaterial.materialAmiga;
+        }
+
+        /*****************************************************************************
+        *   Sets up the camera.
+        *****************************************************************************/
+        private static setupCamera()
+        {
+            MfgScene.camera = new BABYLON.FreeCamera( "Camera", MfgScene.CAMERA_STARTUP, MfgScene.scene );
+            MfgScene.camera.checkCollisions = true;
+            MfgScene.camera.applyGravity    = true;
+            MfgScene.camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
+        }
+
+        /*****************************************************************************
+        *   Sets up all lights.
+        *****************************************************************************/
+        private static setupLights()
+        {
+            //setup lights
+            var light1 = new BABYLON.DirectionalLight( "dir01", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
+            light1.position  = new BABYLON.Vector3( 0, 80, 0 );
+
+            var light2 = new BABYLON.PointLight( "Omni03", new BABYLON.Vector3( -10.0, 0.0, -10.0 ), MfgScene.scene );
+            light2.intensity = 0.5;
+
+            var light3 = new BABYLON.PointLight( "Omni05", new BABYLON.Vector3( 10.0,  0.0, 10.0  ), MfgScene.scene );
+            light3.intensity = 0.5;
+
+
+            //setup shadows
+            MfgScene.shadowGenerator1                      = new BABYLON.ShadowGenerator( 4096, light1 );
+            MfgScene.shadowGenerator1.useVarianceShadowMap = true;
+            MfgScene.shadowGenerator1.usePoissonSampling   = true;
+
+
+
+
         }
     }
