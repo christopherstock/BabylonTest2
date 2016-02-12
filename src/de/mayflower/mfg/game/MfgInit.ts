@@ -47,57 +47,15 @@
                 }
             };
 
-            var loadCustomScene = function (demoConstructor, then) {
-                BABYLON.SceneLoader.ShowLoadingScreen = false;
-                MfgInit.engine.displayLoadingUI();
-
-                setTimeout(function () {
-                    MfgInit.scene = demoConstructor(MfgInit.engine);
-
-                    if (MfgInit.scene.activeCamera) {
-                        MfgInit.scene.activeCamera.attachControl(MfgInit.canvas, false);
-                    }
-
-                    MfgInit.scene.executeWhenReady(function () {
-                        MfgInit.canvas.style.opacity = "1";
-                        MfgInit.engine.hideLoadingUI();
-                        BABYLON.SceneLoader.ShowLoadingScreen = true;
-                        if (then) {
-                            then(MfgInit.scene);
-                        }
-                    });
-                }, 15);
-            };
-
-            // Render loop
-            var renderFunction = function () {
-                // Fps
-                MfgInit.divFps.innerHTML = MfgInit.engine.getFps().toFixed() + " fps";
-
-                // Render scene
-                if (MfgInit.scene) {
-
-                    MfgInit.scene.render();
-
-                    // Streams
-                    if (MfgInit.scene.useDelayedTextureLoading) {
-                        var waiting = MfgInit.scene.getWaitingItemsCount();
-                        if (waiting > 0) {
-                            console.log("Streaming items..." + waiting + " remaining");
-                        }
-                    }
-                }
-            };
-
             // Resize
             window.addEventListener("resize", function () {
                 MfgInit.engine.resize();
             });
 
             //launch render loop
-            MfgInit.engine.runRenderLoop(renderFunction);
+            MfgInit.engine.runRenderLoop(MfgGame.render);
 
             //load the scene
-            loadCustomScene(demo.constructor, demo.onload);
+            MfgScene.loadCustomScene( demo.constructor, demo.onload );
         }
     }

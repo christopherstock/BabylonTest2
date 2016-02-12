@@ -7,6 +7,29 @@
     *****************************************************************************/
     class MfgScene
     {
+        public static loadCustomScene( demoConstructor, then )
+        {
+            BABYLON.SceneLoader.ShowLoadingScreen = false;
+            MfgInit.engine.displayLoadingUI();
+
+            setTimeout(function () {
+                MfgInit.scene = demoConstructor(MfgInit.engine);
+
+                if (MfgInit.scene.activeCamera) {
+                    MfgInit.scene.activeCamera.attachControl(MfgInit.canvas, false);
+                }
+
+                MfgInit.scene.executeWhenReady(function () {
+                    MfgInit.canvas.style.opacity = "1";
+                    MfgInit.engine.hideLoadingUI();
+                    BABYLON.SceneLoader.ShowLoadingScreen = true;
+                    if (then) {
+                        then(MfgInit.scene);
+                    }
+                });
+            }, 15);
+        }
+
         public static CreatePhysicsScene(engine)
         {
             var scene = new BABYLON.Scene(engine);
