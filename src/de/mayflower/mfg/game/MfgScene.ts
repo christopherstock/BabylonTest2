@@ -11,8 +11,13 @@
         public          static                  CAMERA_STARTUP          :BABYLON.Vector3            = new BABYLON.Vector3( -80.0, 40.0, -80.0 );
 
         public          static                  scene                   :BABYLON.Scene              = null;
-        private         static                  shadowGenerator1         :BABYLON.ShadowGenerator    = null;
         public          static                  camera                  :BABYLON.FreeCamera         = null;
+
+        public          static                  light1                  :BABYLON.DirectionalLight   = null;
+        public          static                  light2                  :BABYLON.PointLight         = null;
+        public          static                  light3                  :BABYLON.PointLight         = null;
+
+        private         static                  shadowGenerator1        :BABYLON.ShadowGenerator    = null;
 
         public          static                  spawnSpheres            :boolean                    = true;
         public          static                  spawnBox0               :boolean                    = true;
@@ -73,6 +78,9 @@
 
             //setup lights
             MfgScene.setupLights();
+
+            //setup shadows
+            MfgScene.setupShadows();
 
 
 
@@ -149,7 +157,7 @@
 
                 sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
 
-                y += 2;
+                y += 4;
             }
 
             // Add 10 linked spheres
@@ -271,18 +279,28 @@
         private static setupLights()
         {
             //setup lights
-            var light1 = new BABYLON.DirectionalLight( "dir01", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
-            light1.position  = new BABYLON.Vector3( 0, 80, 0 );
+            MfgScene.light1           = new BABYLON.DirectionalLight( "dir01", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
+            MfgScene.light1.intensity = 1.0;
+            MfgScene.light1.position  = new BABYLON.Vector3( 0, 80, 0 );
 
-            var light2 = new BABYLON.PointLight( "Omni03", new BABYLON.Vector3( -10.0, 0.0, -10.0 ), MfgScene.scene );
-            light2.intensity = 0.5;
+            MfgScene.light2           = new BABYLON.PointLight( "omni01", new BABYLON.Vector3( -10.0, 0.0, -10.0 ), MfgScene.scene );
+            MfgScene.light2.intensity = 1.0;
+            MfgScene.light2.diffuse   = new BABYLON.Color3( 1.0, 0.0, 0.0 );
+            MfgScene.light2.specular  = new BABYLON.Color3( 1.0, 0.0, 0.0 );
 
-            var light3 = new BABYLON.PointLight( "Omni05", new BABYLON.Vector3( 10.0,  0.0, 10.0  ), MfgScene.scene );
-            light3.intensity = 0.5;
+            MfgScene.light3           = new BABYLON.PointLight( "spot01", new BABYLON.Vector3( 10.0,  0.0, 10.0  ), MfgScene.scene );
+            MfgScene.light3.intensity = 1.0;
+            MfgScene.light3.diffuse   = new BABYLON.Color3( 0.0, 0.0, 1.0 );
+            MfgScene.light3.specular  = new BABYLON.Color3( 0.0, 0.0, 1.0 );
+        }
 
-
+        /*****************************************************************************
+        *   Sets up all shadows.
+        *****************************************************************************/
+        private static setupShadows()
+        {
             //setup shadows
-            MfgScene.shadowGenerator1                      = new BABYLON.ShadowGenerator( 4096, light1 );
+            MfgScene.shadowGenerator1                      = new BABYLON.ShadowGenerator( 2048, MfgScene.light1 );
             MfgScene.shadowGenerator1.useVarianceShadowMap = true;
             MfgScene.shadowGenerator1.usePoissonSampling   = true;
 
