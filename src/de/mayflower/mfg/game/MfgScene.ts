@@ -263,9 +263,14 @@
         private static setupCamera()
         {
             MfgScene.camera = new BABYLON.FreeCamera( "Camera", MfgScene.CAMERA_STARTUP, MfgScene.scene );
+
+            MfgScene.camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
+
             MfgScene.camera.checkCollisions = true;
             MfgScene.camera.applyGravity    = true;
-            MfgScene.camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
+
+            //Set the ellipsoid around the camera (e.g. your player's size)
+            MfgScene.camera.ellipsoid = new BABYLON.Vector3( 1, 1, 1 );
         }
 
         /*****************************************************************************
