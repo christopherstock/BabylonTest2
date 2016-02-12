@@ -100,6 +100,11 @@
             if ( MfgScene.spawnBorders  ) MfgScene.setupGlassPanes();
 
             MfgScene.setupSkybox();
+
+            MfgScene.importMesh();
+
+
+
         }
 
         /*****************************************************************************
@@ -355,5 +360,29 @@
             skyboxMaterial.specularColor = new BABYLON.Color3(0, 0, 0);
             //skyboxMaterial.disableLighting = true;
             skybox.material = skyboxMaterial;
+        }
+
+        /*****************************************************************************
+        *   Imports a mesh in the .babylon format.
+        *****************************************************************************/
+        private static importMesh()
+        {
+            // The first parameter can be used to specify which mesh to import. Here we import all meshes
+            BABYLON.SceneLoader.ImportMesh(
+                "",
+                MfgSettings.PATH_3DS,
+                "rabbit.babylon",
+                MfgScene.scene, function (newMeshes:Array<BABYLON.Mesh>)
+                {
+                    var rabbit:BABYLON.Mesh = newMeshes[ 0 ];
+
+                    rabbit.position.z += 60.0;
+                    rabbit.position.y -= 4.0;
+
+                    rabbit.rotate( new BABYLON.Vector3( 0.0, 1.0, 0.0 ), 135.0, BABYLON.Space.LOCAL );
+
+                    //rabbit.checkCollisions = true;
+                }
+            );
         }
     }
