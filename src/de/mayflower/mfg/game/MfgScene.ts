@@ -15,7 +15,7 @@
         public          static                  spawnSpheres            :boolean                    = true;
         public          static                  spawnBox0               :boolean                    = true;
         public          static                  spawnCompound           :boolean                    = true;
-        public          static                  spawnBorders            :boolean                    = false;
+        public          static                  spawnBorders            :boolean                    = true;
 
         /*****************************************************************************
         *   Sets up the scene.
@@ -215,37 +215,47 @@
         private static setupBorders()
         {
             var border0 = BABYLON.Mesh.CreateBox("border0", 1, MfgScene.scene);
-            border0.scaling = new BABYLON.Vector3(1, 100, 100);
-            border0.position.y = -5.0;
-            border0.position.x = -50.0;
+            border0.scaling         = new BABYLON.Vector3(1, 100, 100);
+            border0.position.x      = -50.0;
+            border0.position.y      = 45.0;
+            border0.position.z      = 0.0;
             border0.checkCollisions = true;
 
+/*
             var border1 = BABYLON.Mesh.CreateBox("border1", 1, MfgScene.scene);
             border1.scaling = new BABYLON.Vector3(1, 100, 100);
             border1.position.y = -5.0;
             border1.position.x = 50.0;
             border1.checkCollisions = true;
-
+*/
             var border2 = BABYLON.Mesh.CreateBox("border2", 1, MfgScene.scene);
             border2.scaling = new BABYLON.Vector3(100, 100, 1);
             border2.position.y = -5.0;
             border2.position.z = 50.0;
             border2.checkCollisions = true;
 
+/*
             var border3 = BABYLON.Mesh.CreateBox("border3", 1, MfgScene.scene);
             border3.scaling = new BABYLON.Vector3(100, 100, 1);
             border3.position.y = -5.0;
             border3.position.z = -50.0;
             border3.checkCollisions = true;
-
+*/
             border0.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+/*
             border1.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+*/
             border2.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
+/*
             border3.setPhysicsState(BABYLON.PhysicsEngine.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.0 } );
-
+*/
             border0.material = MfgMaterial.materialGround;
+/*
             border1.material = MfgMaterial.materialGround;
+*/
             border2.material = MfgMaterial.materialGround;
+/*
             border3.material = MfgMaterial.materialGround;
+*/
         }
     }
