@@ -14,12 +14,16 @@
         public      static      TITLE                                       :string             = "Babylon.js primer, (c) 2016 Mayflower GmbH, v. [" + MfgVersion.CURRENT_VERSION.getVersionDescriptor() + "]";
 
         /** The desired canvas3D width. */
-        public      static      CANVAS_WIDTH                                :number             = 700;
+        public      static      CANVAS_WIDTH                                :number             = 800;
         /** The desired canvas3D height. */
-        public      static      CANVAS_HEIGHT                               :number             = 400;
+        public      static      CANVAS_HEIGHT                               :number             = 600;
 
-        /** The delay in ms between each thread tick. */
-        public      static      THREAD_DELAY                                :number             = 20;
+
+
+
+
+
+
 
         /** The camera's field of view in degrees. */
         public      static      CAMERA_FIELD_OF_VIEW                        :number             = 60;

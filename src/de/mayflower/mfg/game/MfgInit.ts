@@ -26,6 +26,10 @@
             MfgInit.canvas = <HTMLCanvasElement>document.getElementById( "renderCanvas" );
             MfgInit.divFps = <HTMLDivElement>   document.getElementById( "fps"          );
 
+            //setup canvas size
+            MfgInit.canvas.width  = MfgSettings.CANVAS_WIDTH;
+            MfgInit.canvas.height = MfgSettings.CANVAS_HEIGHT;
+
             //init Babylon.js engine
             MfgInit.engine = new BABYLON.Engine( MfgInit.canvas, true );
 
