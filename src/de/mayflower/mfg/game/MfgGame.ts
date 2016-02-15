@@ -7,21 +7,29 @@
     *****************************************************************************/
     class MfgGame
     {
+        public          static          currentLevel            :MfgLevel               = null;
+
+        /*****************************************************************************
+        *   The render loop. This method is being invoked each tick.
+        *****************************************************************************/
         public static render()
         {
-            // Fps
+            //assign FPS info
             MfgInit.divFps.innerHTML = MfgInit.engine.getFps().toFixed() + " fps";
 
-            // Render scene
-            if (MfgScene.scene) {
-
+            //render the scene if existent
+            if ( MfgScene.scene )
+            {
+                //render the scene
                 MfgScene.scene.render();
 
-                // Streams
-                if (MfgScene.scene.useDelayedTextureLoading) {
+                //handle streams
+                if ( MfgScene.scene.useDelayedTextureLoading )
+                {
                     var waiting = MfgScene.scene.getWaitingItemsCount();
-                    if (waiting > 0) {
-                        console.log("Streaming items..." + waiting + " remaining");
+                    if ( waiting > 0 )
+                    {
+                        console.log( "Streaming items... " + waiting + " remaining");
                     }
                 }
             }

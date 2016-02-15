@@ -1,117 +1,83 @@
 
     /*****************************************************************************
-    *   Specifies the game scene.
+    *   Specifies the 'bunny' level.
     *
     *   @author     Christopher Stock
     *   @version    0.0.1
     *****************************************************************************/
-    class MfgScene
+    class MfgLevelBunny extends MfgLevel
     {
-        public          static                  SPHERES_TO_SPAWN        :number                     = 250;
-        public          static                  CAMERA_STARTUP          :BABYLON.Vector3            = new BABYLON.Vector3( -80.0, 40.0, -80.0 );
+        private         static                  SPHERES_TO_SPAWN        :number                     = 250;
 
-        public          static                  scene                   :BABYLON.Scene              = null;
-        public          static                  camera                  :BABYLON.FreeCamera         = null;
+        private                                 light1                  :BABYLON.DirectionalLight   = null;
+        private                                 light2                  :BABYLON.PointLight         = null;
+        private                                 light3                  :BABYLON.PointLight         = null;
 
-        public          static                  light1                  :BABYLON.DirectionalLight   = null;
-        public          static                  light2                  :BABYLON.PointLight         = null;
-        public          static                  light3                  :BABYLON.PointLight         = null;
-
-        private         static                  shadowGenerator1        :BABYLON.ShadowGenerator    = null;
-
-        private         static                  spriteManager           :BABYLON.SpriteManager      = null;
-
-        public          static                  spawnSpheres            :boolean                    = true;
-        public          static                  spawnBox0               :boolean                    = true;
-        public          static                  spawnCompound           :boolean                    = true;
-        public          static                  spawnBorders            :boolean                    = true;
+        private                                 shadowGenerator1        :BABYLON.ShadowGenerator    = null;
 
         /*****************************************************************************
-        *   Sets up the scene.
+        *   Sets up the 'bunny' level.
         *****************************************************************************/
-        public static initScene()
+        constructor()
         {
-            BABYLON.SceneLoader.ShowLoadingScreen = false;
-            MfgInit.engine.displayLoadingUI();
-
-            setTimeout(
-                function () {
-                    MfgScene.createScene();
-
-                    if (MfgScene.scene.activeCamera) {
-                        MfgScene.scene.activeCamera.attachControl(MfgInit.canvas);
-                    }
-
-                    MfgScene.scene.executeWhenReady(
-                        MfgScene.initSceneCompleted
-                    );
-                },
-                20
+            super
+            (
+                new BABYLON.Vector3( -80.0, 40.0, -80.0 ),
+                new BABYLON.Vector3( 0,     0,    0     ),
+                LibUI.COLOR_ORANGE_MAYFLOWER
             );
+
+            this.setupLights();
+            this.setupShadows();
+            this.setupGround();
+            this.setupCollidableBox();
+            this.setupSpheres();
+            this.setupBox0();
+            this.setupCompound();
+            this.setupGlassPanes();
+            this.setupSkybox();
+            this.setupSprites();
+            this.importMesh();
         }
 
         /*****************************************************************************
-        *   Being invoked when the scene is set up.
+        *   Sets up all lights.
         *****************************************************************************/
-        public static initSceneCompleted()
+        private setupLights()
         {
-            MfgInit.canvas.style.opacity = "1";
-            BABYLON.SceneLoader.ShowLoadingScreen = true;
-
-            MfgScene.scene.onPointerDown = MfgPointer.assignPointerDown;
-        }
-
-        /*****************************************************************************
-        *   Constructs and fills the scene.
-        *****************************************************************************/
-        public static createScene()
-        {
-            //create scene
-            MfgScene.scene            = new BABYLON.Scene( MfgInit.engine );
-            MfgScene.scene.clearColor = LibUI.COLOR_ORANGE_MAYFLOWER;
-            MfgScene.scene.gravity    = new BABYLON.Vector3( 0, MfgSettings.GRAVITY, 0 );
-
-            //init materials
-            MfgMaterial.initMaterials( MfgScene.scene );
-
-            //setup camera
-            MfgScene.setupCamera();
-
             //setup lights
-            MfgScene.setupLights();
+            this.light1           = new BABYLON.DirectionalLight( "dir01", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
+            this.light1.intensity = 1.0;
+            this.light1.position  = new BABYLON.Vector3( 0, 80, 0 );
 
+            this.light2           = new BABYLON.PointLight( "omni01", new BABYLON.Vector3( -10.0, 0.0, -10.0 ), MfgScene.scene );
+            this.light2.intensity = 1.0;
+            this.light2.diffuse   = new BABYLON.Color3( 1.0, 0.0, 0.0 );
+            this.light2.specular  = new BABYLON.Color3( 1.0, 0.0, 0.0 );
+
+            this.light3           = new BABYLON.PointLight( "spot01", new BABYLON.Vector3( 10.0,  0.0, 10.0  ), MfgScene.scene );
+            this.light3.intensity = 1.0;
+            this.light3.diffuse   = new BABYLON.Color3( 0.0, 0.0, 1.0 );
+            this.light3.specular  = new BABYLON.Color3( 0.0, 0.0, 1.0 );
+        }
+
+        /*****************************************************************************
+        *   Sets up all shadows.
+        *****************************************************************************/
+        private setupShadows()
+        {
             //setup shadows
-            MfgScene.setupShadows();
-
-            //setup sprites
-            MfgScene.setupSprites();
-
-            //setup physics
-            MfgScene.scene.enablePhysics( null, new BABYLON.OimoJSPlugin() );
-
-            //setup all scene data
-            MfgScene.setupGround();
-            MfgScene.setupCollidableBox();
-
-            if ( MfgScene.spawnSpheres  ) MfgScene.setupSpheres();
-            if ( MfgScene.spawnBox0     ) MfgScene.setupBox0();
-            if ( MfgScene.spawnCompound ) MfgScene.setupCompound();
-            if ( MfgScene.spawnBorders  ) MfgScene.setupGlassPanes();
-
-            MfgScene.setupSkybox();
-
-            MfgScene.importMesh();
-
-
-
+            this.shadowGenerator1                      = new BABYLON.ShadowGenerator( 2048, this.light1 );
+            this.shadowGenerator1.useVarianceShadowMap = true;
+            this.shadowGenerator1.usePoissonSampling   = true;
         }
 
         /*****************************************************************************
         *   Sets up the ground for the scene.
         *****************************************************************************/
-        private static setupGround():void
+        private setupGround():void
         {
-            MfgSceneFactory.createBox(
+            MfgSceneFactory.createOldBox(
                 "Ground1",
                 new BABYLON.Vector3( 0.0,   -4.4, 1.0   ),
                 new BABYLON.Vector3( 100.0, 1.0,  100.0 ),
@@ -121,7 +87,7 @@
                 MfgScene.scene
             );
 
-            MfgSceneFactory.createBox(
+            MfgSceneFactory.createOldBox(
                 "Ground2",
                 new BABYLON.Vector3( 0.0,   -26.0, -93.5 ),
                 new BABYLON.Vector3( 100.0, 1.0,   100.0  ),
@@ -131,7 +97,7 @@
                 MfgScene.scene
             );
 
-            MfgSceneFactory.createBox(
+            MfgSceneFactory.createOldBox(
                 "Ground3",
                 new BABYLON.Vector3( 0.0,   -48.0, -185.0 ),
                 new BABYLON.Vector3( 100.0, 1.0,   100.0  ),
@@ -145,16 +111,16 @@
         /*****************************************************************************
         *   Sets up the spheres for the scene.
         *****************************************************************************/
-        private static setupSpheres():void
+        private setupSpheres():void
         {
             var y = 0;
-            for ( var index = 0; index < MfgScene.SPHERES_TO_SPAWN; index++ )
+            for ( var index = 0; index < MfgLevelBunny.SPHERES_TO_SPAWN; index++ )
             {
                 var sphere = BABYLON.Mesh.CreateSphere( "Sphere0", 16, 3, MfgScene.scene );
                 sphere.material = MfgMaterial.materialMFLogo;
                 sphere.position = new BABYLON.Vector3( Math.random() * 20 - 10, y, Math.random() * 10 - 5 );
 
-                MfgScene.shadowGenerator1.getShadowMap().renderList.push( sphere );
+                this.shadowGenerator1.getShadowMap().renderList.push( sphere );
 
                 sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
 
@@ -170,7 +136,7 @@
                 sphere.material = MfgMaterial.materialAmiga;
                 sphere.position = new BABYLON.Vector3(Math.random() * 20 - 10, y, Math.random() * 10 - 5);
 
-                MfgScene.shadowGenerator1.getShadowMap().renderList.push( sphere );
+                this.shadowGenerator1.getShadowMap().renderList.push( sphere );
 
                 sphere.setPhysicsState(BABYLON.PhysicsEngine.SphereImpostor, { mass: 1, friction: 0.0, restitution: 0.0 });
             }
@@ -184,14 +150,14 @@
         /*****************************************************************************
         *   Sets up the box0 for the scene.
         *****************************************************************************/
-        private static setupBox0()
+        private setupBox0()
         {
             // Box
             var box0             = BABYLON.Mesh.CreateBox("Box0", 3, MfgScene.scene);
             box0.position        = new BABYLON.Vector3(3, 30, 0);
             box0.material        = MfgMaterial.materialWood;
 
-            MfgScene.shadowGenerator1.getShadowMap().renderList.push( box0 );
+            this.shadowGenerator1.getShadowMap().renderList.push( box0 );
 
             box0.setPhysicsState(   BABYLON.PhysicsEngine.BoxImpostor, { mass: 2, friction: 0.4, restitution: 0.3 } );
         }
@@ -199,7 +165,7 @@
         /*****************************************************************************
         *   Sets up the compound for the scene.
         *****************************************************************************/
-        private static setupCompound()
+        private setupCompound()
         {
             // Compound
             var part0 = BABYLON.Mesh.CreateBox("part0", 3, MfgScene.scene);
@@ -211,8 +177,8 @@
             part1.position = new BABYLON.Vector3(0, 3, 0);
             part1.material = MfgMaterial.materialWood;
 
-            MfgScene.shadowGenerator1.getShadowMap().renderList.push( part0 );
-            MfgScene.shadowGenerator1.getShadowMap().renderList.push( part1 );
+            this.shadowGenerator1.getShadowMap().renderList.push( part0 );
+            this.shadowGenerator1.getShadowMap().renderList.push( part1 );
 
             MfgScene.scene.createCompoundImpostor(
                 [
@@ -228,7 +194,7 @@
         /*****************************************************************************
         *   Sets up the borders for the scene.
         *****************************************************************************/
-        private static setupGlassPanes()
+        private setupGlassPanes()
         {
             var glassPane1              = BABYLON.Mesh.CreateBox( "border0", 1.0, MfgScene.scene );
             glassPane1.position         = new BABYLON.Vector3( 0.0,   5.0,  0.0  );
@@ -253,7 +219,7 @@
         /*****************************************************************************
         *   Sets up a collidable box.
         *****************************************************************************/
-        private static setupCollidableBox()
+        private setupCollidableBox()
         {
             var solidBox = BABYLON.Mesh.CreateBox("box1", 1.0, MfgScene.scene);
             solidBox.scaling         = new BABYLON.Vector3( 3.0,  3.0,  3.0   );
@@ -264,89 +230,9 @@
         }
 
         /*****************************************************************************
-        *   Sets up the camera.
-        *****************************************************************************/
-        private static setupCamera()
-        {
-            MfgScene.camera = new BABYLON.FreeCamera( "Camera", MfgScene.CAMERA_STARTUP, MfgScene.scene );
-
-            MfgScene.camera.setTarget( new BABYLON.Vector3( 0, 0, 0 ) );
-
-            MfgScene.camera.checkCollisions = true;
-            MfgScene.camera.applyGravity    = true;
-
-            //Set the ellipsoid around the camera (e.g. your player's size)
-            MfgScene.camera.ellipsoid = new BABYLON.Vector3( 1, 1, 1 );
-        }
-
-        /*****************************************************************************
-        *   Sets up all lights.
-        *****************************************************************************/
-        private static setupLights()
-        {
-            //setup lights
-            MfgScene.light1           = new BABYLON.DirectionalLight( "dir01", new BABYLON.Vector3( 0.2, -1, 0 ), MfgScene.scene );
-            MfgScene.light1.intensity = 1.0;
-            MfgScene.light1.position  = new BABYLON.Vector3( 0, 80, 0 );
-
-            MfgScene.light2           = new BABYLON.PointLight( "omni01", new BABYLON.Vector3( -10.0, 0.0, -10.0 ), MfgScene.scene );
-            MfgScene.light2.intensity = 1.0;
-            MfgScene.light2.diffuse   = new BABYLON.Color3( 1.0, 0.0, 0.0 );
-            MfgScene.light2.specular  = new BABYLON.Color3( 1.0, 0.0, 0.0 );
-
-            MfgScene.light3           = new BABYLON.PointLight( "spot01", new BABYLON.Vector3( 10.0,  0.0, 10.0  ), MfgScene.scene );
-            MfgScene.light3.intensity = 1.0;
-            MfgScene.light3.diffuse   = new BABYLON.Color3( 0.0, 0.0, 1.0 );
-            MfgScene.light3.specular  = new BABYLON.Color3( 0.0, 0.0, 1.0 );
-        }
-
-        /*****************************************************************************
-        *   Sets up all shadows.
-        *****************************************************************************/
-        private static setupShadows()
-        {
-            //setup shadows
-            MfgScene.shadowGenerator1                      = new BABYLON.ShadowGenerator( 2048, MfgScene.light1 );
-            MfgScene.shadowGenerator1.useVarianceShadowMap = true;
-            MfgScene.shadowGenerator1.usePoissonSampling   = true;
-        }
-
-        /*****************************************************************************
-        *   Sets up all sprites.
-        *****************************************************************************/
-        private static setupSprites()
-        {
-            MfgScene.spriteManager = new BABYLON.SpriteManager( "treesManager", MfgSettings.PATH_IMAGE_TEXTURE + "tree.png", 100, 357, MfgScene.scene );
-
-            var tree1        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
-            tree1.position   = new BABYLON.Vector3( 45.0, 5.0, -35.0 );
-            tree1.size       = 20.0;
-
-            var tree2        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
-            tree2.position   = new BABYLON.Vector3( 45.0, 5.0, -20.0 );
-            tree2.size       = 20.0;
-
-            var tree3        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
-            tree3.position   = new BABYLON.Vector3( 45.0, 5.0, -5.0 );
-            tree3.size       = 20.0;
-
-            var tree4        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
-            tree4.position   = new BABYLON.Vector3( 45.0, 5.0, 10.0 );
-            tree4.size       = 20.0;
-
-            var tree5        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
-            tree5.position   = new BABYLON.Vector3( 45.0, 5.0, 25.0 );
-            tree5.size       = 20.0;
-
-            var tree6        = new BABYLON.Sprite( "tree1", MfgScene.spriteManager );
-            tree6.position   = new BABYLON.Vector3( 45.0, 5.0, 40.0 );
-            tree6.size       = 20.0;
-        }
-
-        /*****************************************************************************
         *   Sets up the skybox.
         *****************************************************************************/
-        private static setupSkybox()
+        private setupSkybox()
         {
             // Skybox
             var skybox = BABYLON.Mesh.CreateBox("skyBox", 500.0, MfgScene.scene);
@@ -362,28 +248,59 @@
         }
 
         /*****************************************************************************
+        *   Sets up all sprites.
+        *****************************************************************************/
+        private setupSprites()
+        {
+            var tree1        = new BABYLON.Sprite( "tree1", MfgSprite.spriteManager );
+            tree1.position   = new BABYLON.Vector3( 45.0, 5.0, -35.0 );
+            tree1.size       = 20.0;
+
+            var tree2        = new BABYLON.Sprite( "tree1", MfgSprite.spriteManager );
+            tree2.position   = new BABYLON.Vector3( 45.0, 5.0, -20.0 );
+            tree2.size       = 20.0;
+
+            var tree3        = new BABYLON.Sprite( "tree1", MfgSprite.spriteManager );
+            tree3.position   = new BABYLON.Vector3( 45.0, 5.0, -5.0 );
+            tree3.size       = 20.0;
+
+            var tree4        = new BABYLON.Sprite( "tree1", MfgSprite.spriteManager );
+            tree4.position   = new BABYLON.Vector3( 45.0, 5.0, 10.0 );
+            tree4.size       = 20.0;
+
+            var tree5        = new BABYLON.Sprite( "tree1", MfgSprite.spriteManager );
+            tree5.position   = new BABYLON.Vector3( 45.0, 5.0, 25.0 );
+            tree5.size       = 20.0;
+
+            var tree6        = new BABYLON.Sprite( "tree1", MfgSprite.spriteManager );
+            tree6.position   = new BABYLON.Vector3( 45.0, 5.0, 40.0 );
+            tree6.size       = 20.0;
+        }
+
+        /*****************************************************************************
         *   Imports a mesh in the .babylon format.
         *****************************************************************************/
-        private static importMesh()
+        private importMesh()
         {
             // The first parameter can be used to specify which mesh to import. Here we import all meshes
-            BABYLON.SceneLoader.ImportMesh(
+            BABYLON.SceneLoader.ImportMesh
+            (
                 "",
                 MfgSettings.PATH_3DS,
                 "rabbit.babylon",
-                MfgScene.scene, function (newMeshes:Array<BABYLON.Mesh>)
+                MfgScene.scene,
+                function (newMeshes:Array<BABYLON.Mesh>)
                 {
                     var rabbit:BABYLON.Mesh = newMeshes[ 0 ];
 
-                    rabbit.position.z += 60.0;
+                    //transform the rabbit
                     rabbit.position.y -= 4.0;
-
+                    rabbit.position.z += 60.0;
                     rabbit.rotate( new BABYLON.Vector3( 0.0, 1.0, 0.0 ), 135.0, BABYLON.Space.LOCAL );
 
                     //rabbit.checkCollisions = true;
 
-                    //NOW hide the loading UI! :D
-                    MfgInit.engine.hideLoadingUI();
+                    MfgInit.onInitCompleted();
                 }
             );
         }
