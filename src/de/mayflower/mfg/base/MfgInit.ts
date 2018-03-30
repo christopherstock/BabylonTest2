@@ -76,7 +76,7 @@
 
             //setup the level
             MfgDebug.init.log( "Setup the level" );
-            MfgGame.currentLevel = new MfgLevelFirstPerson();
+            MfgGame.currentLevel = new MfgLevelBunny();
         }
 
         /*****************************************************************************

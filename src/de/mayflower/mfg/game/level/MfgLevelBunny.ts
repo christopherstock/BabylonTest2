@@ -282,6 +282,10 @@
         *****************************************************************************/
         private importMesh()
         {
+
+                    MfgInit.onInitCompleted();
+return;
+
             // The first parameter can be used to specify which mesh to import. Here we import all meshes
             BABYLON.SceneLoader.ImportMesh
             (
